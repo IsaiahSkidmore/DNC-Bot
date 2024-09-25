@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2.5rem;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    width: 600px;
+    height: 60px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 1.2rem;
+    margin-top: 50px;
+}
+
+/* BUTTON CSS */
+
+button {
+    width: 100px;
+    height: 60px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1.2rem;
+    margin-top: 50px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+
+#callButton {
+    background-color: green;
+}
+
+#callButton:hover {
+    background-color: darkgreen;
+}
+
+#callButton:active {
+    background-color: lightgreen;
+}
+
+#dncButton {
+    background-color: red;
+}
+
+#dncButton:hover {
+    background-color: darkred;
+}
+
+#dncButton:active {
+    background-color: lightcoral;
+}
+
+
