@@ -5,16 +5,23 @@ function addToDNC() {
         let dncList = JSON.parse(localStorage.getItem('dncList')) || []; // Get existing DNC list or create a new one
         let newP = document.createElement("p");
         let modal = document.getElementById("addToDncModal");
+        let messageContainer = document.getElementById("messageContainer"); // Get the new container
         dncList.push(phoneNumber); // Add number to the list
         localStorage.setItem('dncList', JSON.stringify(dncList)); // Save updated list to localStorage
 
-        // Clear the modal
-        modal.innerHTML = "";
+        // Clear the message container
+        messageContainer.innerHTML = "";
 
-        newP.innerHTML = phoneNumber + " added to DNC list";
-        modal.appendChild(newP);
+        newP.innerHTML = phoneNumber + " has been added to DNC list";
+        messageContainer.appendChild(newP); // Append the new paragraph to the message container
+
+        document.getElementById("dialing-modal").style.display = "none";
+        document.getElementById("dnc-modal").style.display = "none";
+        document.getElementById("enterNumber-modal").style.display = "none";
         modal.style.display = "block";
     } else {
+        document.getElementById("dialing-modal").style.display = "none";
+        document.getElementById("addToDncModal").style.display = "none";
         document.getElementById("dnc-modal").style.display = "none";
         document.getElementById("enterNumber-modal").style.display = "block";
     }
@@ -27,12 +34,19 @@ function dialNumber() {
         let dncList = JSON.parse(localStorage.getItem('dncList')) || []; // Get existing DNC list
 
         if (dncList.includes(phoneNumber)) {
+            document.getElementById("dialing-modal").style.display = "none";
+            document.getElementById("addToDncModal").style.display = "none";
             document.getElementById("enterNumber-modal").style.display = "none";
             document.getElementById("dnc-modal").style.display = "block";
         } else {
+            document.getElementById("dnc-modal").style.display = "none";
+            document.getElementById("addToDncModal").style.display = "none";
+            document.getElementById("enterNumber-modal").style.display = "none";
             document.getElementById("dialing-modal").style.display = "block";
         }
     } else {
+        document.getElementById("addToDncModal").style.display = "none";
+        document.getElementById("dialing-modal").style.display = "none";
         document.getElementById("dnc-modal").style.display = "none";
         document.getElementById("enterNumber-modal").style.display = "block";
     }
@@ -59,6 +73,3 @@ document.getElementById("close-dialButton").addEventListener("click", function (
 document.getElementById("close-addDnc").addEventListener("click", function () {
     document.getElementById("addToDncModal").style.display = "none";
 });
-
-
-
