@@ -1,75 +1,56 @@
-// Function to add phone number to DNC list (localStorage)
+// Get elements
+const [phoneNumberInput, addToDncModal, messageContainer, dialingModal, dncModal, enterNumberModal] = 
+    ["phoneNumber", "addToDncModal", "messageContainer", "dialing-modal", "dnc-modal", "enterNumber-modal"]
+    .map(id => document.getElementById(id));
+
+// Get buttons
+const [dncButton, callButton, closeButtonDnc, closeButton, closeDialButton, closeAddDnc] = 
+    ["dncButton", "callButton", "close-button-dnc", "close-button", "close-dialButton", "close-addDnc"]
+    .map(id => document.getElementById(id));
+
+// Function to hide all modals
+function hideAllModals() {
+    [addToDncModal, dialingModal, dncModal, enterNumberModal].forEach(modal => modal.style.display = "none");
+}
+
+// Function to show a modal
+function showModal(modal) {
+    hideAllModals();
+    modal.style.display = "block";
+}
+
+// Function to add a number to DNC
 function addToDNC() {
-    let phoneNumber = document.getElementById("phoneNumber").value;
+    let phoneNumber = phoneNumberInput.value;
     if (phoneNumber) {
-        let dncList = JSON.parse(localStorage.getItem('dncList')) || []; // Get existing DNC list or create a new one
-        let newP = document.createElement("p");
-        let modal = document.getElementById("addToDncModal");
-        let messageContainer = document.getElementById("messageContainer"); // Get the new container
-        dncList.push(phoneNumber); // Add number to the list
-        localStorage.setItem('dncList', JSON.stringify(dncList)); // Save updated list to localStorage
+        let dncList = JSON.parse(localStorage.getItem('dncList')) || [];
+        dncList.push(phoneNumber);
+        localStorage.setItem('dncList', JSON.stringify(dncList));
 
-        // Clear the message container
         messageContainer.innerHTML = "";
+        messageContainer.appendChild(document.createElement("p")).innerHTML = phoneNumber + " has been added to DNC list";
 
-        newP.innerHTML = phoneNumber + " has been added to DNC list";
-        messageContainer.appendChild(newP); // Append the new paragraph to the message container
-
-        document.getElementById("dialing-modal").style.display = "none";
-        document.getElementById("dnc-modal").style.display = "none";
-        document.getElementById("enterNumber-modal").style.display = "none";
-        modal.style.display = "block";
+        showModal(addToDncModal);
     } else {
-        document.getElementById("dialing-modal").style.display = "none";
-        document.getElementById("addToDncModal").style.display = "none";
-        document.getElementById("dnc-modal").style.display = "none";
-        document.getElementById("enterNumber-modal").style.display = "block";
+        showModal(enterNumberModal);
     }
 }
 
 // Function to dial a phone number
 function dialNumber() {
-    let phoneNumber = document.getElementById("phoneNumber").value;
+    let phoneNumber = phoneNumberInput.value;
     if (phoneNumber) {
-        let dncList = JSON.parse(localStorage.getItem('dncList')) || []; // Get existing DNC list
-
-        if (dncList.includes(phoneNumber)) {
-            document.getElementById("dialing-modal").style.display = "none";
-            document.getElementById("addToDncModal").style.display = "none";
-            document.getElementById("enterNumber-modal").style.display = "none";
-            document.getElementById("dnc-modal").style.display = "block";
-        } else {
-            document.getElementById("dnc-modal").style.display = "none";
-            document.getElementById("addToDncModal").style.display = "none";
-            document.getElementById("enterNumber-modal").style.display = "none";
-            document.getElementById("dialing-modal").style.display = "block";
-        }
+        let dncList = JSON.parse(localStorage.getItem('dncList')) || [];
+        showModal(dncList.includes(phoneNumber) ? dncModal : dialingModal);
     } else {
-        document.getElementById("addToDncModal").style.display = "none";
-        document.getElementById("dialing-modal").style.display = "none";
-        document.getElementById("dnc-modal").style.display = "none";
-        document.getElementById("enterNumber-modal").style.display = "block";
+        showModal(enterNumberModal);
     }
 }
 
-
-document.getElementById("dncButton").addEventListener("click", addToDNC);
-document.getElementById("callButton").addEventListener("click", dialNumber);
-
-// Close modals
-
-document.getElementById("close-button-dnc").addEventListener("click", function () {
-    document.getElementById("dnc-modal").style.display = "none";
-});
-
-document.getElementById("close-button").addEventListener("click", function () {
-    document.getElementById("enterNumber-modal").style.display = "none";
-});
-
-document.getElementById("close-dialButton").addEventListener("click", function () {
-    document.getElementById("dialing-modal").style.display = "none";
-});
-
-document.getElementById("close-addDnc").addEventListener("click", function () {
-    document.getElementById("addToDncModal").style.display = "none";
-});
+// Add event listeners
+dncButton.addEventListener("click", addToDNC);
+callButton.addEventListener("click", dialNumber);
+closeButtonDnc.addEventListener("click", () => hideAllModals());
+closeButton.addEventListener("click", () => hideAllModals());
+closeDialButton.addEventListener("click", () => hideAllModals());
+closeAddDnc.addEventListener("click", () => hideAllModals());
